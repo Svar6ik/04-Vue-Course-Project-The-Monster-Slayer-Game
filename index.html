@@ -20,7 +20,7 @@
       <section id="monster" class="container">
         <h2>Monster Health</h2>
         <div class="healthbar">
-          <div class="healthbar__value" :style="mosterBarStyles" ></div>
+          <div class="healthbar__value" :style="mosterBarStyles"></div>
           <!-- получаем доступ к style обязательно добавит % -->
         </div>
       </section>
@@ -31,21 +31,39 @@
         </div>
       </section>
       <section class="container" v-if="winner">
-        <h2 >Game over!</h2>
+        <h2>Game over!</h2>
         <h3 v-if="winner === 'monster'">You lost!</h3>
         <h3 v-else-if="winner === 'player'">You won!</h3>
         <h3 v-else>It's a draw!</h3>
         <button @click="startGame">Start New Game!</button>
       </section>
-      <section id="controls" v-else> 
+      <section id="controls" v-else>
         <button @click="attackMonster">ATTACK</button>
-        <button :disabled="mayUseSpicialAttack" @click="specialAttack">SPECIAL ATTACK</button>
+        <button :disabled="mayUseSpicialAttack" @click="specialAttack">
+          SPECIAL ATTACK
+        </button>
         <button :disabled="mayHeal" @click="healPlayer">HEAL</button>
         <button @click="surrender">SURRENDER</button>
       </section>
       <section id="log" class="container">
         <h2>Battle Log</h2>
-        <ul></ul>
+        <ul>
+          <li v-for="logMessage in logMessages">
+            <span
+              :class="{'log--player': logMessage.actionBy === 'player', 'log--monster': logMessage.actionBy === 'monster'}"
+              >{{ logMessage.actionBy === 'player' ? 'Player' : 'Monster'
+              }}</span
+            >
+            <span v-if="logMessage.actionType === 'heal'">
+              heals himself for
+              <span class="log--heal">{{ logMessage.actionValue }} </span>
+            </span>
+            <span v-else>
+              attacks and deals
+              <span class="log--damage">{{ logMessage.actionValue }}</span>
+            </span>
+          </li>
+        </ul>
       </section>
     </div>
   </body>
